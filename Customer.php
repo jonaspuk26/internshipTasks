@@ -15,6 +15,11 @@ class Customer extends BankAccount {
     {
         $this->listOfBankAccounts[$name] = new BankAccount($name, $currentBalance);
     }
+
+    public function CopyBankAccount(string $nameCopyTo, string $nameCopyFrom): void
+    {
+        $this->listOfBankAccounts[$nameCopyTo] = clone $this->listOfBankAccounts[$nameCopyFrom];
+    }
     public function GetTotalBalance(string $name)
     {
         return $this->listOfBankAccounts[$name]->currentBalance;
@@ -24,6 +29,12 @@ class Customer extends BankAccount {
         foreach ($this->listOfBankAccounts as $bankAccount) {
             printf("$bankAccount->accountName:\n");
             $bankAccount->PrintHistory();
+        }
+    }
+    public function PrintStatistics(): void{
+        foreach ($this->listOfBankAccounts as $bankAccount) {
+            printf("$bankAccount->accountName:\n");
+            $bankAccount->PrintStatistics();
         }
     }
 }

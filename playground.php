@@ -16,5 +16,13 @@ var_dump($bobo->GetTotalBalance('bobo1'));
 $bobo -> AddBankAccount('bobo2', 600);
 $bobo -> listOfBankAccounts['bobo2'] -> AddMoney(500);
 $bobo -> listOfBankAccounts['bobo2'] -> SubtractMoney(100);
+$bobo -> listOfBankAccounts['bobo2'] -> SubtractMoney(200);
 var_dump($bobo->GetTotalBalance('bobo2'));
 $bobo -> PrintHistory();
+$bobo -> PrintStatistics();
+$bobo -> AddBankAccount('bobo3', 200);
+$bobo -> CopyBankAccount('bobo3','bobo2');
+var_dump($bobo->GetTotalBalance('bobo3'));
+$bobo -> listOfBankAccounts['bobo2'] -> SubtractMoney(100);
+var_dump($bobo->GetTotalBalance('bobo3'));
+

@@ -34,4 +34,30 @@ class BankAccount{
         printf($operation . "\n");
     }
     }
+    public function PrintStatistics(): void
+    {
+        $count = 0;
+        $subtractionCount = 0;
+        $totalSubtracted = 0;
+        foreach($this->listOfOperations as $operation){
+            if(is_string($operation)){
+                $count++;
+            }
+            if(is_string($operation) && str_contains($operation, "-"))
+            {
+                $subtractionCount++;
+                $totalSubtracted += floatval($operation);
+            }
+        }
+
+        printf("Number of operations: " . $count . "\n");
+
+        if ($subtractionCount == 0){
+            printf("There were no subtraction operations on this account.\n");
+        } else {
+            $avgSubtracted = $totalSubtracted / $subtractionCount;
+            printf("Number of subtractions: " . $subtractionCount . "\n");
+            printf("Average subtraction amount: " . $avgSubtracted . "\n");
+        }
+    }
 }
