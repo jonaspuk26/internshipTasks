@@ -97,14 +97,13 @@ class Customer extends BankAccount
         }
     }
 
-    private function AddWhenNumberPositive(string $lastUsedAccount, $decimalNum): float
+    private function AddWhenNumberPositive(string $lastUsedAccount, $decimalNum): void
     {
         $this->listOfBankAccounts[$lastUsedAccount]->AddMoney($decimalNum);
         print "$decimalNum was added to your bank account.\n";
-        return $decimalNum;
     }
 
-    private function SubtractWhenNumberNegative(string $lastUsedAccount, $decimalNum): float
+    private function SubtractWhenNumberNegative(string $lastUsedAccount, $decimalNum): void
     {
         $decimalNum = -$decimalNum;
         try {
@@ -113,6 +112,5 @@ class Customer extends BankAccount
         } catch (Exception $e) {
             print $e->getMessage() . "$decimalNum was not subtracted from your bank account.\n";
         }
-        return $decimalNum;
     }
 }
