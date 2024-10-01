@@ -1,6 +1,6 @@
 <?php
 
-enum CustomerType{
+enum CustomerType {
     case PERSON;
     case COMPANY;
 }

@@ -74,22 +74,20 @@ class Customer extends BankAccount
                 $this->HandleNumericUserInput($lastUsedAccount, $decimalNum);
             } catch (Exception $e) {
                 print $e->getMessage() . "\n";
+                $decimalNum = 0;
                 $this->UserInputFromConsole($lastUsedAccount);
             }
         } while ($decimalNum != 0);
     }
 
-    private function HandleNumericUserInput(string $lastUsedAccount, $decimalNum): int
+    private function HandleNumericUserInput(string $lastUsedAccount, $decimalNum): float
     {
         if (is_numeric($decimalNum)) {
             if ($decimalNum > 0) {
-                $this->listOfBankAccounts[$lastUsedAccount]->AddMoney($decimalNum);
-                print "$decimalNum was added to your bank account.\n";
+                $this->AddWhenNumberPositive($lastUsedAccount, $decimalNum);
                 return $decimalNum;
             } else if ($decimalNum < 0) {
-                $decimalNum = -$decimalNum;
-                $this->listOfBankAccounts[$lastUsedAccount]->SubtractMoney($decimalNum);
-                print "$decimalNum was subtracted from your bank account.\n";
+                $this->SubtractWhenNumberNegative($lastUsedAccount, $decimalNum);
                 return $decimalNum;
             } else {
                 return $decimalNum = 0;
@@ -97,5 +95,24 @@ class Customer extends BankAccount
         } else {
             throw new Exception("Value entered is not a number. Try again");
         }
+    }
+
+    private function AddWhenNumberPositive(string $lastUsedAccount, $decimalNum): float
+    {
+        $this->listOfBankAccounts[$lastUsedAccount]->AddMoney($decimalNum);
+        print "$decimalNum was added to your bank account.\n";
+        return $decimalNum;
+    }
+
+    private function SubtractWhenNumberNegative(string $lastUsedAccount, $decimalNum): float
+    {
+        $decimalNum = -$decimalNum;
+        try {
+            $this->listOfBankAccounts[$lastUsedAccount]->SubtractMoney($decimalNum);
+            print "$decimalNum was subtracted from your bank account.\n";
+        } catch (Exception $e) {
+            print $e->getMessage() . "$decimalNum was not subtracted from your bank account.\n";
+        }
+        return $decimalNum;
     }
 }

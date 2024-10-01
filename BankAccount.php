@@ -14,9 +14,9 @@ class BankAccount
                                 float  $currentBalance = 0,
     )
     {
-        try{
+        try {
             $this->setAccountName($accountName);
-        } catch(Exception $e){
+        } catch (Exception $e) {
             print "Error: " . $e->getMessage() . "\n";
         }
         $this->currentBalance = $currentBalance;
@@ -41,7 +41,8 @@ class BankAccount
     public function SubtractMoney(float $amount): void
     {
         if ($this->currentBalance < $amount) {
-            printf("Overdraw: current balance is $this->currentBalance, you tried to subtract $amount\n");
+            throw new Exception
+            ("Overdraw: current balance is $this->currentBalance, you tried to subtract $amount.\n");
         } else {
             $this->currentBalance -= $amount;
             $this->listOfOperations[] = "-$amount";
