@@ -67,8 +67,7 @@ class Customer extends BankAccount
 
     public function UserInputFromConsole(string $lastUsedAccount): void
     {
-        $decimalNum = 1;
-        while ($decimalNum != 0) {
+        do {
             try {
                 $decimalNum = readline
                 ('Enter a decimal number amount to add or subtract from your bank account(enter 0 to exit):');
@@ -77,7 +76,7 @@ class Customer extends BankAccount
                 print $e->getMessage() . "\n";
                 $this->UserInputFromConsole($lastUsedAccount);
             }
-        }
+        } while ($decimalNum != 0);
     }
 
     private function HandleNumericUserInput(string $lastUsedAccount, $decimalNum): int
