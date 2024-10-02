@@ -3,11 +3,13 @@
 //use BankApp\Customer as Customer;
 
 include __DIR__ . '/Customer.php';
+include __DIR__ . '/ConsoleWriter.php';
+include __DIR__ . '/ConsoleAndLogWriter.php';
 
-
-$jojo = new Customer('jojo', 800);
-$bobo = new Customer('bobo1');
-
+$consoleWriter = new ConsoleAndLogWriter();
+$jojo = new Customer($consoleWriter, 'jojo', 800);
+$bobo = new Customer($consoleWriter, 'bobo1');
+/*
 var_dump($jojo->GetTotalBalance('jojo'));
 $jojo
     ->listOfBankAccounts['jojo']
@@ -15,7 +17,7 @@ $jojo
 $jojo->listOfBankAccounts['jojo']->SubtractMoney(200);
 var_dump($jojo->GetTotalBalance('jojo'));
 
-$bobo->listOfBankAccounts['bobo1']->AddMoney(500);
+$bobo->listOfBankAccounts['bobo1']->AddMoney(600);
 $bobo->listOfBankAccounts['bobo1']->SubtractMoney(600);
 var_dump($bobo->GetTotalBalance('bobo1'));
 $bobo->AddBankAccount('bobo2', 600);
@@ -23,7 +25,7 @@ $bobo->listOfBankAccounts['bobo2']->AddMoney(500);
 $bobo->listOfBankAccounts['bobo2']->SubtractMoney(100);
 $bobo->listOfBankAccounts['bobo2']->SubtractMoney(200);
 var_dump($bobo->GetTotalBalance('bobo2'));
-$bobo->PrintHistoryCustomer();
+$bobo->PrintHistory();
 $bobo->PrintStatistics();
 $bobo->AddBankAccount('bobo3', 200);
 $bobo->CopyBankAccount('bobo3', 'bobo2');
@@ -32,7 +34,20 @@ $bobo->listOfBankAccounts['bobo2']->SubtractMoney(100);
 var_dump($bobo->GetTotalBalance('bobo3'));
 
 
+
 $bobo->UserInputFromConsole('bobo1');
 var_dump($bobo->GetTotalBalance('bobo1'));
+*/
+$coco = new Customer($consoleWriter, 'coco1', 200, true, true, -200);
+var_dump($coco->GetTotalBalance('coco1'));
+$coco->listOfBankAccounts['coco1']->AddMoney(200);
+$coco->listOfBankAccounts['coco1']->SubtractMoney(200);
+var_dump($coco->GetTotalBalance('coco1'));
+$coco->listOfBankAccounts['coco1']->SubtractMoney(200);
+$coco->PrintHistory();
+
+$coco->PrintStatistics();
+
+
 
 
