@@ -1,10 +1,9 @@
 <?php
+
 include __DIR__ . '/BankAccount.php';
-include __DIR__ . '/CustomerType.php';
+include __DIR__ . '/../Helpers/CustomerType.php';
 include __DIR__ . '/LimitedBankAccount.php';
-include_once __DIR__ . '/IBankWriter.php';
-//namespace BankApp;
-//use BankApp\BankAccount as BankAccount;
+include_once __DIR__ . '/../Helpers/IBankWriter.php';
 
 class Customer
 {

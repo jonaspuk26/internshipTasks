@@ -1,10 +1,8 @@
 <?php
-//namespace BankApp;
-//use BankApp\Customer as Customer;
 
-include __DIR__ . '/Customer.php';
-include __DIR__ . '/ConsoleWriter.php';
-include __DIR__ . '/ConsoleAndLogWriter.php';
+include __DIR__ . '/Data_models/Customer.php';
+include __DIR__ . '/Helpers/ConsoleWriter.php';
+include __DIR__ . '/Helpers/ConsoleAndLogWriter.php';
 
 $consoleWriter = new ConsoleAndLogWriter();
 $jojo = new Customer($consoleWriter, 'jojo', 800);
