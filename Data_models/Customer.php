@@ -89,17 +89,13 @@ class Customer
         } while ($decimalNum != 0);
     }
 
-    private function HandleNumericUserInput(string $lastUsedAccount, $decimalNum): float
+    private function HandleNumericUserInput(string $lastUsedAccount, $decimalNum): void
     {
         if (is_numeric($decimalNum)) {
             if ($decimalNum > 0) {
                 $this->AddWhenNumberPositive($lastUsedAccount, $decimalNum);
-                return $decimalNum;
             } else if ($decimalNum < 0) {
                 $this->SubtractWhenNumberNegative($lastUsedAccount, $decimalNum);
-                return $decimalNum;
-            } else {
-                return $decimalNum = 0;
             }
         } else {
             throw new Exception("Value entered is not a number. Try again");
@@ -109,7 +105,6 @@ class Customer
     private function AddWhenNumberPositive(string $lastUsedAccount, $decimalNum): void
     {
         $this->listOfBankAccounts[$lastUsedAccount]->AddMoney($decimalNum);
-        $this->console->Write("$decimalNum was added to your bank account.\n");
     }
 
     private function SubtractWhenNumberNegative(string $lastUsedAccount, $decimalNum): void
@@ -117,7 +112,6 @@ class Customer
         $decimalNum = -$decimalNum;
         try {
             $this->listOfBankAccounts[$lastUsedAccount]->SubtractMoney($decimalNum);
-            $this->console->Write("$decimalNum was subtracted from your bank account.\n");
         } catch (Exception $e) {
             $this->console->Write($e->getMessage() . "$decimalNum was not subtracted from your bank account.\n");
         }
