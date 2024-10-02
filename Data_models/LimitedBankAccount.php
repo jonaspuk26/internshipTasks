@@ -23,11 +23,10 @@ class LimitedBankAccount extends BankAccount
     #[Override]
     public function SubtractMoney(float $amount): void
     {
-        try{
+        try {
             $this->SubtractMoneyIfEligible($amount);
             $this->console->Write("$amount was subtracted from your bank account.\n");
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             $this->console->Write($e->getMessage() . " Money was not subtracted.\n");
         }
     }
