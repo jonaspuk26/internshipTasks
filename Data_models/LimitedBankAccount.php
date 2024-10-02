@@ -23,12 +23,13 @@ class LimitedBankAccount extends BankAccount
     #[Override]
     public function SubtractMoney(float $amount): void
     {
-        if ($this->currentBalance - $amount > $this->negativeLimit) {
-            $this->currentBalance -= $amount;
-            $this->listOfOperations[] = "-$amount";
-        } else throw new Exception
-        ("Overdraw: your limit is $this->negativeLimit, current balance is $this->currentBalance,
-        you tried to subtract $amount");
+        try{
+            $this->SubtractMoneyIfEligible($amount);
+            $this->console->Write("$amount was subtracted from your bank account.\n");
+        }
+        catch(Exception $e){
+            $this->console->Write($e->getMessage() . " Money was not subtracted.\n");
+        }
     }
 
     #[Override]
@@ -36,5 +37,16 @@ class LimitedBankAccount extends BankAccount
     {
         $this->console->Write("Account limit:$this->negativeLimit\n");
         parent::PrintHistory();
+    }
+
+    private function SubtractMoneyIfEligible(float $amount): void
+    {
+        if ($this->currentBalance - $amount > $this->negativeLimit) {
+            $this->currentBalance -= $amount;
+            $this->listOfOperations[] = "-$amount";
+        } else throw new Exception
+        ("Overdraw: your limit is $this->negativeLimit,"
+            . " current balance is $this->currentBalance,"
+            . " you tried to subtract $amount.");
     }
 }

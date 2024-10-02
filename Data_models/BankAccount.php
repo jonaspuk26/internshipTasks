@@ -11,18 +11,19 @@ class BankAccount
 
     public IBankWriter $console;
 
-    public function __construct(
+    public function __construct
+    (
         IBankWriter $console,
         string      $accountName,
         float       $currentBalance = 0,
     )
     {
-        $this->console = $console;
         try {
             $this->setAccountName($accountName);
         } catch (Exception $e) {
             $console->Write("Error: " . $e->getMessage() . "\n");
         }
+        $this->console = $console;
         $this->currentBalance = $currentBalance;
         $this->listOfOperations[] = $currentBalance;
     }
@@ -40,16 +41,16 @@ class BankAccount
     {
         $this->currentBalance += $amount;
         $this->listOfOperations[] = "+$amount";
+        $this->console->Write("$amount was added to your bank account.\n");
     }
 
     public function SubtractMoney(float $amount): void
     {
-        if ($this->currentBalance < $amount) {
-            throw new Exception
-            ("Overdraw: current balance is $this->currentBalance, you tried to subtract $amount.\n");
-        } else {
-            $this->currentBalance -= $amount;
-            $this->listOfOperations[] = "-$amount";
+        try {
+            $this->SubtractMoneyIfEligible($amount);
+            $this->console->Write("$amount was subtracted from your bank account.\n");
+        } catch (Exception $e) {
+            $this->console->Write($e->getMessage() . "$amount was not subtracted from your bank account.\n");
         }
     }
 
@@ -97,5 +98,16 @@ class BankAccount
         $operationsCounts['addition'] = $additionCount;
         $operationsCounts['subtraction'] = $subtractionCount;
         return $operationsCounts;
+    }
+
+    private function SubtractMoneyIfEligible($amount): void
+    {
+        if ($this->currentBalance < $amount) {
+            throw new Exception
+            ("Overdraw: current balance is $this->currentBalance, you tried to subtract $amount.\n");
+        } else {
+            $this->currentBalance -= $amount;
+            $this->listOfOperations[] = "-$amount";
+        }
     }
 }

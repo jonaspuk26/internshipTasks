@@ -5,7 +5,7 @@ include __DIR__ . '/Helpers/ConsoleWriter.php';
 include __DIR__ . '/Helpers/ConsoleAndLogWriter.php';
 
 $consoleWriter = new ConsoleAndLogWriter();
-$jojo = new Customer($consoleWriter, 'jojo', 800);
+$jojo = new Customer($consoleWriter, 'jo', 800);
 $bobo = new Customer($consoleWriter, 'bobo1');
 /*
 var_dump($jojo->GetTotalBalance('jojo'));
@@ -39,7 +39,7 @@ var_dump($bobo->GetTotalBalance('bobo1'));
 $coco = new Customer($consoleWriter, 'coco1', 200, true, true, -200);
 var_dump($coco->GetTotalBalance('coco1'));
 $coco->listOfBankAccounts['coco1']->AddMoney(200);
-$coco->listOfBankAccounts['coco1']->SubtractMoney(200);
+$coco->listOfBankAccounts['coco1']->SubtractMoney(500);
 var_dump($coco->GetTotalBalance('coco1'));
 $coco->listOfBankAccounts['coco1']->SubtractMoney(200);
 $coco->PrintHistory();
