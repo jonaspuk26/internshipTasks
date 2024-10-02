@@ -1,26 +1,29 @@
 <?php
 declare(strict_types=1);
 include_once __DIR__ . '/IBankWriter.php';
+
 //namespace BankApp;
 
 
-class BankAccount implements IBankWriter
+class BankAccount
 {
     public string $accountName;
     public float $currentBalance = 0;
     public array $listOfOperations = [];
-    public function Write($text): void{
-        print $text;
-    }
 
-    public function __construct(string $accountName,
-                                float  $currentBalance = 0,
+    public IBankWriter $console;
+
+    public function __construct(
+        IBankWriter $console,
+        string      $accountName,
+        float       $currentBalance = 0,
     )
     {
+        $this->console = $console;
         try {
             $this->setAccountName($accountName);
         } catch (Exception $e) {
-            $this->Write("Error: " . $e->getMessage() . "\n");
+            $console->Write("Error: " . $e->getMessage() . "\n");
         }
         $this->currentBalance = $currentBalance;
         $this->listOfOperations[] = $currentBalance;
@@ -55,7 +58,7 @@ class BankAccount implements IBankWriter
     public function PrintHistory(): void
     {
         foreach ($this->listOfOperations as $operation) {
-            $this->Write($operation . "\n");
+            $this->console->Write($operation . "\n");
         }
     }
 
@@ -69,13 +72,13 @@ class BankAccount implements IBankWriter
         }
         $opCount = $this->GetOperationsCounts();
 
-        $this->Write("Number of operations: " . $opCount['addition'] + $opCount['subtraction'] . "\n");
+        $this->console->Write("Number of operations: " . $opCount['addition'] + $opCount['subtraction'] . "\n");
         if ($opCount['subtraction'] == 0) {
-            $this->Write("There were no subtraction operations on this account.\n");
+            $this->console->Write("There were no subtraction operations on this account.\n");
         } else {
             $avgSubtracted = $totalSubtracted / $opCount['subtraction'];
-            $this->Write("Number of subtractions: " . $opCount['subtraction'] . "\n");
-            $this->Write("Average subtraction amount: " . $avgSubtracted . "\n");
+            $this->console->Write("Number of subtractions: " . $opCount['subtraction'] . "\n");
+            $this->console->Write("Average subtraction amount: " . $avgSubtracted . "\n");
         }
     }
 

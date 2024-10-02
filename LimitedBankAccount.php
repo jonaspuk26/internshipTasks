@@ -4,13 +4,17 @@ declare(strict_types=1);
 class LimitedBankAccount extends BankAccount
 {
     private float $negativeLimit;
+    public IBankWriter $console;
 
-    public function __construct(string $accountName,
-                                float $currentBalance = 0,
-                                float $negativeLimit = 0
+    public function __construct(
+        IBankWriter $console,
+        string      $accountName,
+        float       $currentBalance = 0,
+        float       $negativeLimit = 0
     )
     {
-        parent::__construct($accountName, $currentBalance);
+        $this->console = $console;
+        parent::__construct($this->console, $accountName, $currentBalance);
         $this->negativeLimit = $negativeLimit;
     }
 
@@ -28,7 +32,7 @@ class LimitedBankAccount extends BankAccount
     #[Override]
     public function PrintHistory(): void
     {
-        print("Account limit:$this->negativeLimit\n");
+        $this->console->Write("Account limit:$this->negativeLimit\n");
         parent::PrintHistory();
     }
 }

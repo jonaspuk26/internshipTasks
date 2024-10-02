@@ -6,24 +6,24 @@ include_once __DIR__ . '/IBankWriter.php';
 //namespace BankApp;
 //use BankApp\BankAccount as BankAccount;
 
-class Customer implements IBankWriter
+class Customer
 {
     private string $name;
     public array $listOfBankAccounts = [];
     public CustomerType $type;
 
-    public function Write($text): void{
-        print $text;
-    }
+    public IBankWriter $console;
 
     public function __construct(
-        string $name,
-        float  $currentBalance = 0,
-        bool   $is_company = false,
-        bool   $is_limited = false,
-        float  $negativeLimit = 0,
+        IBankWriter $console,
+        string      $name,
+        float       $currentBalance = 0,
+        bool        $is_company = false,
+        bool        $is_limited = false,
+        float       $negativeLimit = 0,
     )
     {
+        $this->console = $console;
         $this->name = $name;
         $this->AddBankAccount($name, $currentBalance, $is_limited, $negativeLimit);
         $is_company
@@ -38,8 +38,8 @@ class Customer implements IBankWriter
     ): void
     {
         !$is_limited
-            ? $this->listOfBankAccounts[$name] = new BankAccount($name, $currentBalance)
-            : $this->listOfBankAccounts[$name] = new LimitedBankAccount($name, $currentBalance, $negativeLimit);
+            ? $this->listOfBankAccounts[$name] = new BankAccount($this->console, $name, $currentBalance)
+            : $this->listOfBankAccounts[$name] = new LimitedBankAccount($this->console, $name, $currentBalance, $negativeLimit);
     }
 
     public function CopyBankAccount(string $nameCopyTo,
@@ -59,11 +59,10 @@ class Customer implements IBankWriter
         foreach ($this->listOfBankAccounts as $bankAccount) {
             match ($this->type) {
                 CustomerType::PERSON =>
-                $this->Write("A person $bankAccount->accountName:\n"),
+                $this->console->Write("A person $bankAccount->accountName:\n"),
                 CustomerType::COMPANY =>
-                $this->Write("A corporation $bankAccount->accountName:\n"),
+                $this->console->Write("A corporation $bankAccount->accountName:\n"),
             };
-            $this->Write("$bankAccount->accountName:\n");
             $bankAccount->PrintHistory();
         }
     }
@@ -71,7 +70,7 @@ class Customer implements IBankWriter
     public function PrintStatistics(): void
     {
         foreach ($this->listOfBankAccounts as $bankAccount) {
-            $this->Write("$bankAccount->accountName:\n");
+            $this->console->Write("$bankAccount->accountName:\n");
             $bankAccount->PrintStatistics();
         }
     }
@@ -84,7 +83,7 @@ class Customer implements IBankWriter
                 ('Enter a decimal number amount to add or subtract from your bank account(enter 0 to exit):');
                 $this->HandleNumericUserInput($lastUsedAccount, $decimalNum);
             } catch (Exception $e) {
-                $this->Write($e->getMessage() . "\n");
+                $this->console->Write($e->getMessage() . "\n");
                 $decimalNum = 0;
                 $this->UserInputFromConsole($lastUsedAccount);
             }
@@ -111,7 +110,7 @@ class Customer implements IBankWriter
     private function AddWhenNumberPositive(string $lastUsedAccount, $decimalNum): void
     {
         $this->listOfBankAccounts[$lastUsedAccount]->AddMoney($decimalNum);
-        $this->Write("$decimalNum was added to your bank account.\n");
+        $this->console->Write("$decimalNum was added to your bank account.\n");
     }
 
     private function SubtractWhenNumberNegative(string $lastUsedAccount, $decimalNum): void
@@ -119,9 +118,9 @@ class Customer implements IBankWriter
         $decimalNum = -$decimalNum;
         try {
             $this->listOfBankAccounts[$lastUsedAccount]->SubtractMoney($decimalNum);
-            $this->Write("$decimalNum was subtracted from your bank account.\n");
+            $this->console->Write("$decimalNum was subtracted from your bank account.\n");
         } catch (Exception $e) {
-            $this->Write($e->getMessage() . "$decimalNum was not subtracted from your bank account.\n");
+            $this->console->Write($e->getMessage() . "$decimalNum was not subtracted from your bank account.\n");
         }
     }
 }
