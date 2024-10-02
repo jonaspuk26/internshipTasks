@@ -1,24 +1,31 @@
 <?php
 include __DIR__ . '/BankAccount.php';
 include __DIR__ . '/CustomerType.php';
+include __DIR__ . '/LimitedBankAccount.php';
+include_once __DIR__ . '/IBankWriter.php';
 //namespace BankApp;
 //use BankApp\BankAccount as BankAccount;
 
-class Customer extends BankAccount
+class Customer implements IBankWriter
 {
     private string $name;
     public array $listOfBankAccounts = [];
     public CustomerType $type;
 
+    public function Write($text): void{
+        print $text;
+    }
+
     public function __construct(
         string $name,
         float  $currentBalance = 0,
         bool   $is_company = false,
+        bool   $is_limited = false,
+        float  $negativeLimit = 0,
     )
     {
-        parent::__construct($name, $currentBalance);
         $this->name = $name;
-        $this->AddBankAccount($name, $currentBalance);
+        $this->AddBankAccount($name, $currentBalance, $is_limited, $negativeLimit);
         $is_company
             ? $this->type = CustomerType::COMPANY
             : $this->type = CustomerType::PERSON;
@@ -26,9 +33,13 @@ class Customer extends BankAccount
 
     public function AddBankAccount(string $name,
                                    float  $currentBalance,
+                                   bool   $is_limited = false,
+                                   float  $negativeLimit = 0,
     ): void
     {
-        $this->listOfBankAccounts[$name] = new BankAccount($name, $currentBalance);
+        !$is_limited
+            ? $this->listOfBankAccounts[$name] = new BankAccount($name, $currentBalance)
+            : $this->listOfBankAccounts[$name] = new LimitedBankAccount($name, $currentBalance, $negativeLimit);
     }
 
     public function CopyBankAccount(string $nameCopyTo,
@@ -43,16 +54,16 @@ class Customer extends BankAccount
         return $this->listOfBankAccounts[$name]->currentBalance;
     }
 
-    public function PrintHistoryCustomer(): void
+    public function PrintHistory(): void
     {
         foreach ($this->listOfBankAccounts as $bankAccount) {
             match ($this->type) {
                 CustomerType::PERSON =>
-                printf("A person $bankAccount->accountName:\n"),
+                $this->Write("A person $bankAccount->accountName:\n"),
                 CustomerType::COMPANY =>
-                printf("A corporation $bankAccount->accountName:\n"),
+                $this->Write("A corporation $bankAccount->accountName:\n"),
             };
-            printf("$bankAccount->accountName:\n");
+            $this->Write("$bankAccount->accountName:\n");
             $bankAccount->PrintHistory();
         }
     }
@@ -60,7 +71,7 @@ class Customer extends BankAccount
     public function PrintStatistics(): void
     {
         foreach ($this->listOfBankAccounts as $bankAccount) {
-            printf("$bankAccount->accountName:\n");
+            $this->Write("$bankAccount->accountName:\n");
             $bankAccount->PrintStatistics();
         }
     }
@@ -73,7 +84,7 @@ class Customer extends BankAccount
                 ('Enter a decimal number amount to add or subtract from your bank account(enter 0 to exit):');
                 $this->HandleNumericUserInput($lastUsedAccount, $decimalNum);
             } catch (Exception $e) {
-                print $e->getMessage() . "\n";
+                $this->Write($e->getMessage() . "\n");
                 $decimalNum = 0;
                 $this->UserInputFromConsole($lastUsedAccount);
             }
@@ -100,7 +111,7 @@ class Customer extends BankAccount
     private function AddWhenNumberPositive(string $lastUsedAccount, $decimalNum): void
     {
         $this->listOfBankAccounts[$lastUsedAccount]->AddMoney($decimalNum);
-        print "$decimalNum was added to your bank account.\n";
+        $this->Write("$decimalNum was added to your bank account.\n");
     }
 
     private function SubtractWhenNumberNegative(string $lastUsedAccount, $decimalNum): void
@@ -108,9 +119,9 @@ class Customer extends BankAccount
         $decimalNum = -$decimalNum;
         try {
             $this->listOfBankAccounts[$lastUsedAccount]->SubtractMoney($decimalNum);
-            print "$decimalNum was subtracted from your bank account.\n";
+            $this->Write("$decimalNum was subtracted from your bank account.\n");
         } catch (Exception $e) {
-            print $e->getMessage() . "$decimalNum was not subtracted from your bank account.\n";
+            $this->Write($e->getMessage() . "$decimalNum was not subtracted from your bank account.\n");
         }
     }
 }

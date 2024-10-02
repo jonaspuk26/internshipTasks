@@ -1,14 +1,17 @@
 <?php
 declare(strict_types=1);
-
+include_once __DIR__ . '/IBankWriter.php';
 //namespace BankApp;
 
 
-class BankAccount
+class BankAccount implements IBankWriter
 {
     public string $accountName;
     public float $currentBalance = 0;
-    private array $listOfOperations = [];
+    public array $listOfOperations = [];
+    public function Write($text): void{
+        print $text;
+    }
 
     public function __construct(string $accountName,
                                 float  $currentBalance = 0,
@@ -17,7 +20,7 @@ class BankAccount
         try {
             $this->setAccountName($accountName);
         } catch (Exception $e) {
-            print "Error: " . $e->getMessage() . "\n";
+            $this->Write("Error: " . $e->getMessage() . "\n");
         }
         $this->currentBalance = $currentBalance;
         $this->listOfOperations[] = $currentBalance;
@@ -52,7 +55,7 @@ class BankAccount
     public function PrintHistory(): void
     {
         foreach ($this->listOfOperations as $operation) {
-            printf($operation . "\n");
+            $this->Write($operation . "\n");
         }
     }
 
@@ -66,13 +69,13 @@ class BankAccount
         }
         $opCount = $this->GetOperationsCounts();
 
-        printf("Number of operations: " . $opCount['addition'] + $opCount['subtraction'] . "\n");
+        $this->Write("Number of operations: " . $opCount['addition'] + $opCount['subtraction'] . "\n");
         if ($opCount['subtraction'] == 0) {
-            printf("There were no subtraction operations on this account.\n");
+            $this->Write("There were no subtraction operations on this account.\n");
         } else {
             $avgSubtracted = $totalSubtracted / $opCount['subtraction'];
-            printf("Number of subtractions: " . $opCount['subtraction'] . "\n");
-            printf("Average subtraction amount: " . $avgSubtracted . "\n");
+            $this->Write("Number of subtractions: " . $opCount['subtraction'] . "\n");
+            $this->Write("Average subtraction amount: " . $avgSubtracted . "\n");
         }
     }
 
