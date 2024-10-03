@@ -6,7 +6,7 @@ use DataModels\Customer;
 use Helpers\ConsoleAndLogWriter;
 
 $consoleWriter = new ConsoleAndLogWriter();
-$jojo = new Customer($consoleWriter, 'jojo', 800);
+$jojo = new Customer($consoleWriter, 'jo', 800);
 $bobo = new Customer($consoleWriter, 'bobo1');
 
 var_dump($jojo->GetTotalBalance('jojo'));

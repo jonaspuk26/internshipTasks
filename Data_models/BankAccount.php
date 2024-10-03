@@ -21,7 +21,7 @@ class BankAccount
     )
     {
         try {
-            $this->setAccountName($accountName);
+            $this->SetAccountName($accountName);
         } catch (\Exception $e) {
             $console->Write("Error: " . $e->getMessage() . "\n");
         }
@@ -30,7 +30,7 @@ class BankAccount
         $this->listOfOperations[] = $currentBalance;
     }
 
-    public function setAccountName(string $accountName): void
+    public function SetAccountName(string $accountName): void
     {
         if (strlen($accountName) >= 3) {
             $this->accountName = $accountName;
