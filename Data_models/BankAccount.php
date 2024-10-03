@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-include_once __DIR__ . '/../Helpers/IBankWriter.php';
+namespace DataModels;
+
+use Helpers\IBankWriter;
 
 class BankAccount
 {
@@ -20,7 +22,7 @@ class BankAccount
     {
         try {
             $this->setAccountName($accountName);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $console->Write("Error: " . $e->getMessage() . "\n");
         }
         $this->console = $console;
@@ -33,7 +35,7 @@ class BankAccount
         if (strlen($accountName) >= 3) {
             $this->accountName = $accountName;
         } else {
-            throw new Exception("Account name is too short.");
+            throw new \Exception("Account name is too short.");
         }
     }
 
@@ -49,7 +51,7 @@ class BankAccount
         try {
             $this->SubtractMoneyIfEligible($amount);
             $this->console->Write("$amount was subtracted from your bank account.\n");
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->console->Write($e->getMessage() . "$amount was not subtracted from your bank account.\n");
         }
     }
@@ -103,7 +105,7 @@ class BankAccount
     private function SubtractMoneyIfEligible($amount): void
     {
         if ($this->currentBalance < $amount) {
-            throw new Exception
+            throw new \Exception
             ("Overdraw: current balance is $this->currentBalance, you tried to subtract $amount.\n");
         } else {
             $this->currentBalance -= $amount;

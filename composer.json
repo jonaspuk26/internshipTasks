@@ -1,0 +1,19 @@
+{
+    "name": "jonas/internship1",
+    "description": "tasks",
+    "type": "project",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "DataModels\\": "Data_models/",
+            "Helpers\\": "Helpers/"
+        }
+    },
+    "authors": [
+        {
+            "name": "jonaspuk26"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

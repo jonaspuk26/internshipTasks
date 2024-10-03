@@ -1,9 +1,9 @@
 <?php
 
-include __DIR__ . '/BankAccount.php';
-include __DIR__ . '/../Helpers/CustomerType.php';
-include __DIR__ . '/LimitedBankAccount.php';
-include_once __DIR__ . '/../Helpers/IBankWriter.php';
+namespace DataModels;
+
+use Helpers\CustomerType;
+use Helpers\IBankWriter;
 
 class Customer
 {
@@ -81,7 +81,7 @@ class Customer
                 $decimalNum = readline
                 ('Enter a decimal number amount to add or subtract from your bank account(enter 0 to exit):');
                 $this->HandleNumericUserInput($lastUsedAccount, $decimalNum);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->console->Write($e->getMessage() . "\n");
                 $decimalNum = 0;
                 $this->UserInputFromConsole($lastUsedAccount);
@@ -98,7 +98,7 @@ class Customer
                 $this->SubtractWhenNumberNegative($lastUsedAccount, $decimalNum);
             }
         } else {
-            throw new Exception("Value entered is not a number. Try again");
+            throw new \Exception("Value entered is not a number. Try again");
         }
     }
 
@@ -112,7 +112,7 @@ class Customer
         $decimalNum = -$decimalNum;
         try {
             $this->listOfBankAccounts[$lastUsedAccount]->SubtractMoney($decimalNum);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->console->Write($e->getMessage() . "$decimalNum was not subtracted from your bank account.\n");
         }
     }

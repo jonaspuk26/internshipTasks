@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-include_once __DIR__ . '/../Helpers/IBankWriter.php';
+namespace DataModels;
+
+use Helpers\IBankWriter;
 
 class LimitedBankAccount extends BankAccount
 {
@@ -26,7 +28,7 @@ class LimitedBankAccount extends BankAccount
         try {
             $this->SubtractMoneyIfEligible($amount);
             $this->console->Write("$amount was subtracted from your bank account.\n");
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->console->Write($e->getMessage() . " Money was not subtracted.\n");
         }
     }
@@ -43,7 +45,7 @@ class LimitedBankAccount extends BankAccount
         if ($this->currentBalance - $amount > $this->negativeLimit) {
             $this->currentBalance -= $amount;
             $this->listOfOperations[] = "-$amount";
-        } else throw new Exception
+        } else throw new \Exception
         ("Overdraw: your limit is $this->negativeLimit,"
             . " current balance is $this->currentBalance,"
             . " you tried to subtract $amount.");

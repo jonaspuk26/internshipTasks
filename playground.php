@@ -1,8 +1,9 @@
 <?php
 
-include __DIR__ . '/Data_models/Customer.php';
-include __DIR__ . '/Helpers/ConsoleWriter.php';
-include __DIR__ . '/Helpers/ConsoleAndLogWriter.php';
+require __DIR__ . '/vendor/autoload.php';
+
+use DataModels\Customer;
+use Helpers\ConsoleAndLogWriter;
 
 $consoleWriter = new ConsoleAndLogWriter();
 $jojo = new Customer($consoleWriter, 'jojo', 800);

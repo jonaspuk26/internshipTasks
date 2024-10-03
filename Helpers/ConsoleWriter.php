@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . '/IBankWriter.php';
+namespace Helpers;
 
 class ConsoleWriter implements IBankWriter
 {
