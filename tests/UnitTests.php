@@ -3,7 +3,6 @@
 namespace tests;
 
 use DataModels\BankAccount;
-use PHPUnit\Exception;
 use PHPUnit\Framework\TestCase;
 use Helpers\ConsoleWriter;
 
@@ -39,6 +38,8 @@ class UnitTests extends TestCase
         $bankAccount = new BankAccount($consoleWriter, 'jojo');
         try{
             $bankAccount->SetAccountName('jo');
+            $this->assertEquals('jo', $bankAccount->accountName);
+            $this->fail('Exception should have been thrown');
         } catch(\Exception $e) {
             $this->assertStringContainsString('Account name is too short', $e->getMessage());
         }
