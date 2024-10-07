@@ -33,7 +33,7 @@ class LimitedBankAccount extends BankAccount
         }
     }
 
-    #[Override]
+    #[\Override]
     public function PrintHistory(): void
     {
         $this->console->Write("Account limit:$this->negativeLimit\n");
@@ -42,7 +42,7 @@ class LimitedBankAccount extends BankAccount
 
     private function SubtractMoneyIfEligible(float $amount): void
     {
-        if ($this->currentBalance - $amount > $this->negativeLimit) {
+        if ($this->currentBalance - $amount >= $this->negativeLimit) {
             $this->currentBalance -= $amount;
             $this->listOfOperations[] = "-$amount";
         } else throw new \Exception
